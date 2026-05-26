@@ -6,7 +6,9 @@ public class QueryParameters
     private int _pageSize = 10;
 
     public string? Search { get; set; }
+
     public string? Sort { get; set; }
+
     public int Page { get; set; } = 1;
 
     public int Size
@@ -16,5 +18,6 @@ public class QueryParameters
     }
 
     public string? Fields { get; set; }
+
     public string? Expand { get; set; }
 }

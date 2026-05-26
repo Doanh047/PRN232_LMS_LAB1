@@ -55,6 +55,8 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     if (File.Exists(xmlPath))
         c.IncludeXmlComments(xmlPath);
+
+    c.DescribeAllParametersInCamelCase();
 });
 
 var app = builder.Build();
