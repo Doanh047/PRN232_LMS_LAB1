@@ -1,0 +1,56 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vs/
+.vscode/
+*.sln.iml
+*.DotSettings.user
+.idea/
+.DS_Store
+
+# Documentation
+docs/
+*.md
+README.md
+
+# Build artifacts (không cần, Docker sẽ build lại)
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.log
+
+# User-specific files
+*.user
+*.userosscache
+appsettings.Development.json
+
+# Docker
+docker-compose.yml
+docker-compose.override.yml
+.dockerignore
+Dockerfile
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+.viminfo
+
+# Node (if any frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS
+Thumbs.db
+.DS_Store
