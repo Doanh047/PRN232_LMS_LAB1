@@ -12,8 +12,13 @@ namespace PRN232.LMS.API.Controllers;
 public class SemestersController : ControllerBase
 {
     private readonly ISemesterService _service;
+    private readonly ICourseService _courseService;
 
-    public SemestersController(ISemesterService service) => _service = service;
+    public SemestersController(ISemesterService service, ICourseService courseService)
+    {
+        _service = service;
+        _courseService = courseService;
+    }
 
     /// <summary>Get paginated list of semesters</summary>
     [HttpGet]
@@ -77,5 +82,29 @@ public class SemestersController : ControllerBase
             return NotFound(ApiResponse<object>.Fail($"Semester with id {id} not found."));
 
         return Ok(ApiResponse<object>.Ok((object?)null, "Semester deleted successfully."));
+    }
+
+    /// <summary>Create a new course attached to a specific semester</summary>
+    [HttpPost("{id:int}/courses")]
+    [ProducesResponseType(typeof(ApiResponse<CourseResponse>), 201)]
+    [ProducesResponseType(typeof(ApiResponse<object>), 400)]
+    [ProducesResponseType(typeof(ApiResponse<object>), 404)]
+    public async Task<IActionResult> CreateCourse(int id, [FromBody] CourseRequest request)
+    {
+        var semester = await _service.GetByIdAsync(id);
+        if (semester is null)
+            return NotFound(ApiResponse<object>.Fail($"Semester with id {id} not found."));
+
+        request.SemesterId = id;
+
+        if (!ModelState.IsValid)
+            return BadRequest(ApiResponse<object>.Fail("Invalid request.", ModelState));
+
+        var result = await _courseService.CreateAsync(request);
+        return CreatedAtAction(
+            nameof(CoursesController.GetById),
+            "Courses",
+            new { id = result.CourseId },
+            ApiResponse<CourseResponse>.Ok(result, "Course created successfully."));
     }
 }
